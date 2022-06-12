@@ -32,11 +32,13 @@ const PersonForm = ({ persons, updateData, setNotification }) => {
 			create({
 				name: elements.name.value,
 				number: elements.number.value,
-			}).then(() => {
-				setNotification({ type: "success", message: "Person added" });
-				setTimeout(() => setNotification(null), 5000);
-				updateData();
-			});
+			})
+				.then(() => {
+					setNotification({ type: "success", message: "Person added" });
+					setTimeout(() => setNotification(null), 5000);
+					updateData();
+				})
+				.catch((error) => setNotification({ type: "error", message: error.response.data.error }));
 		}
 
 		setNewName("");
@@ -75,7 +77,10 @@ const Person = ({ person, updateData, setNotification }) => {
 			deleteById(person.id)
 				.then(() => updateData())
 				.catch((err) => {
-					setNotification({ type: "error", message: `Inforrmation of ${person.name} han already been removed from server`});
+					setNotification({
+						type: "error",
+						message: `Information of ${person.name} han already been removed from server`,
+					});
 					setTimeout(() => setNotification(null), 5000);
 				});
 		}
